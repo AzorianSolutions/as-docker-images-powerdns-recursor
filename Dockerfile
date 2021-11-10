@@ -1,5 +1,5 @@
-ARG DISTRO=alpine
-ARG DISTRO_TAG=3.14.2
+ARG DISTRO=debian
+ARG DISTRO_TAG=11.1-slim
 
 FROM ${DISTRO}:${DISTRO_TAG}
 
@@ -14,8 +14,8 @@ COPY src/pdns-recursor-${AS_PDNS_VERSION}.tar.bz2 /tmp/
 
 COPY files/* /srv/
 
-RUN apk update \
-  && apk add python3 py3-virtualenv py3-pip boost-dev boost-serialization boost-system boost-thread boost-context openssl-dev net-snmp-dev g++ make pkgconfig lua5.3-dev luajit-dev \
+RUN apt update \
+  && apt -y install python3-venv python3-pip libboost-dev libboost-serialization-dev libboost-system-dev libboost-thread-dev libboost-context-dev libssl-dev libsnmp-dev g++ make pkg-config libluajit-5.1-dev \
   && pip3 install --no-cache-dir envtpl
 
 RUN mv /srv/entrypoint.sh / \
@@ -28,12 +28,11 @@ RUN mv /srv/entrypoint.sh / \
   && rm -rf /tmp/pdns-recursor-${AS_PDNS_VERSION} \
   && mkdir -p /etc/pdns/conf.d \
   && mkdir -p /var/run/pdns-recursor \
-  && addgroup ${PDNS_setgid} 2>/dev/null \
-  && adduser -S -s /bin/false -H -h /tmp -G ${PDNS_setgid} ${PDNS_setuid} 2>/dev/null \
+  && adduser --system --disabled-login --no-create-home --home /tmp --shell /bin/false --group ${PDNS_setgid} 2>/dev/null \
   && chown -R ${PDNS_setuid}:${PDNS_setgid} /etc/pdns/conf.d /var/run/pdns-recursor
 
 EXPOSE 53/tcp 53/udp 8082/tcp
 
-ENTRYPOINT ["sh", "/entrypoint.sh"]
+ENTRYPOINT ["/entrypoint.sh"]
 
 CMD ["/usr/sbin/pdns_recursor"]
