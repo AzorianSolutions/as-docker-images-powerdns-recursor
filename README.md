@@ -33,24 +33,15 @@ When building this image, support for the following features have been compiled 
 
 ### Alpine Linux
 
-- alpine-3.14-4.5.7, alpine-3.14, alpine, latest
-- alpine-3.14-4.4.7
-- alpine-3.14-4.3.7
-- alpine-3.13-4.5.7, alpine-3.13
-- alpine-3.13-4.4.7
-- alpine-3.13-4.3.7
-- alpine-3.12-4.5.7, alpine-3.12
-- alpine-3.12-4.4.7
-- alpine-3.12-4.3.7
+- 4.5.7, 4.5.7-alpine, 4.5.7-alpine-3.14, alpine, latest
+- 4.4.7, 4.4.7-alpine, 4.4.7-alpine-3.14
+- 4.3.7, 4.3.7-alpine, 4.3.7-alpine-3.14
 
 ### Debian Linux
 
-- debian-11.1-slim-4.5.7, debian-11.1-slim, debian
-- debian-11.1-slim-4.4.7
-- debian-11.1-slim-4.3.7
-- debian-11.0-slim-4.5.7, debian-11.0-slim
-- debian-11.0-slim-4.4.7
-- debian-11.0-slim-4.3.7
+- 4.5.7-debian, 4.5.7-debian-11.1-slim
+- 4.4.7-debian, 4.4.7-debian-11.1-slim
+- 4.3.7-debian, 4.3.7-debian-11.1-slim
 
 ## Deploying this image
 
@@ -136,11 +127,11 @@ The build-realease command assumes the following parameter defaults;
 - Image Tag Name: latest
 - PDNS Version: 4.5.7
 - Distro Name: alpine
-- Distro Tag: 3.14.2
+- Distro Tag: 3.14
 
 This means that running the build-release command with no parameters would be the equivalent of executing the following shell command:
 
-    build-release latest 4.5.7 alpine 3.14.2
+    build-release latest 4.5.7 alpine 3.14
 
 When the image is tagged during compilation, the repository portion of the image tag is derived from the contents of the .as/docker-registry file and the tag from the first parameter provided to the build-release command.
 
