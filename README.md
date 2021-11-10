@@ -9,6 +9,7 @@ The PowerDNS Recursor is a high-performance DNS recursor with built-in scripting
 ## Quick reference
 
 - **Maintained by:** [Matt Scott](https://github.com/AzorianSolutions)
+- **Github:** [https://github.com/AzorianSolutions/docker-powerdns-recursor](https://github.com/AzorianSolutions/docker-powerdns-recursor)
 - **Website:** [https://azorian.solutions](https://azorian.solutions)
 
 ## TL;DR
