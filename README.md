@@ -135,8 +135,8 @@ The build-realease command assumes the following parameter defaults;
 
 - Image Tag Name: latest
 - PDNS Version: 4.5.7
-- Distro Name: alpine
-- Distro Tag: 3.14.2
+- Distro Name: debian
+- Distro Tag: 11.1-slim
 
 This means that running the build-release command with no parameters would be the equivalent of executing the following shell command:
 
