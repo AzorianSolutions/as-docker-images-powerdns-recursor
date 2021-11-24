@@ -26,7 +26,7 @@ All documentation will be written with the assumption that you are already reaso
 
 When building this image, support for the following features have been compiled into the server binaries.
 
-- Lua
+- Lua (luajit)
 - SNMP
 - libsodium
 
