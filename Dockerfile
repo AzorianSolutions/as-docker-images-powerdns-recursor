@@ -15,13 +15,16 @@ COPY src/pdns-recursor-${AS_PDNS_VERSION}.tar.bz2 /tmp/
 COPY files/* /srv/
 
 RUN apt update \
-  && apt -y install python3-venv python3-pip libboost-dev libboost-serialization-dev libboost-system-dev libboost-thread-dev libboost-context-dev libssl-dev libsnmp-dev g++ make pkg-config libluajit-5.1-dev \
+  && apt -y install g++ make pkg-config libssl-dev libsodium-dev python3-venv \
+  python3-pip libboost-dev libboost-serialization-dev libboost-system-dev \
+  libboost-thread-dev libboost-context-dev libluajit-5.1-dev \
   && pip3 install --no-cache-dir envtpl
 
 RUN mv /srv/entrypoint.sh / \
   && cat /tmp/pdns-recursor-${AS_PDNS_VERSION}.tar.bz2 | tar xj -C /tmp \
   && cd /tmp/pdns-recursor-${AS_PDNS_VERSION} \
   && ./configure --prefix="" --exec-prefix=/usr --sysconfdir=/etc/pdns \
+  --with-libsodium \
   && make \
   && make install \
   && cd / \

@@ -14,7 +14,7 @@ The PowerDNS Recursor is a high-performance DNS recursor with built-in scripting
 
 ## TL;DR
 
-    docker run -d -p 12053:53/udp -p 12054:53 -e PDNS_local_address=0.0.0.0 azoriansolutions/powerdns-recursor
+    docker run -d -p 12053:53/udp -p 12053:53 -e PDNS_local_address=0.0.0.0 azoriansolutions/powerdns-recursor
 
 ## Azorian Solutions Docker image strategy
 
@@ -28,20 +28,17 @@ When building this image, support for the following features have been compiled 
 
 - Lua
 - SNMP
+- libsodium
 
 ## Supported tags
 
 ### Alpine Linux
 
 - 4.5.7, 4.5.7-alpine, 4.5.7-alpine-3.14, alpine, latest
-- 4.4.7, 4.4.7-alpine, 4.4.7-alpine-3.14
-- 4.3.7, 4.3.7-alpine, 4.3.7-alpine-3.14
 
 ### Debian Linux
 
-- 4.5.7-debian, 4.5.7-debian-11.1-slim
-- 4.4.7-debian, 4.4.7-debian-11.1-slim
-- 4.3.7-debian, 4.3.7-debian-11.1-slim
+- 4.5.7-debian, 4.5.7-debian-11.1-slim, debian
 
 ## Deploying this image
 
@@ -71,13 +68,13 @@ This would result in the following line being added to the /etc/pdns/resolver.co
 
 With this approach, you may create traditional PowerDNS resolver conf files and map them to a specific location inside of the container. This will cause each mapped configuration file to be loaded each time the container is started. For example, say your Docker / Podman host has a PowerDNS resolver conf file stored at /srv/pdns-resolver.conf and you want to load that in your PowerDNS recursor container. You will created a volume mapping that will link the conf file on the host to a specific location in the container. The mapping would look something like this;
 
-    /srv/pdns-resolver.conf:/etc/pdns/conf.d/10-pdns.conf
+    /srv/pdns-resolver.conf:/etc/pdns/resolver.conf
 
 ### Deploy with Docker Run
 
 To run a simple container on Docker with this image, execute the following Docker command;
 
-    docker run -d -p 12053:53/udp -p 12054:53 -e PDNS_local_address=0.0.0.0 azoriansolutions/powerdns-recursor
+    docker run -d -p 12053:53/udp -p 12053:53 -e PDNS_local_address=0.0.0.0 azoriansolutions/powerdns-recursor
 
 If all goes well and the container starts, you should now be able to query this DNS recursor using dig;
 
@@ -90,25 +87,17 @@ To run this image using Docker Compose, create a YAML file with a name and place
     version: "3.3"
     services:
       recursor:
-        image: azoriansolutions/powerdns-recursor:latest
+        image: azoriansolutions/powerdns-recursor:debian
         restart: unless-stopped
         environment:
           - PDNS_local_address=0.0.0.0
         ports:
           - "12053:53/udp"
-          - "12054:53"
+          - "12053:53"
 
 Then execute the following Docker Compose command;
 
     docker-compose -u /path/to/yaml/file.yml
-
-### Deploy wit Podman
-
-Coming soon...
-
-### Deploy with Kubectl
-
-Coming soon...
 
 ## Building this image
 
@@ -118,9 +107,9 @@ The build-release command has the following parameter format;
 
     build-release IMAGE_TAG_NAME PDNS_VERSION DISTRO_REPO_NAME DISTRO_TAG
 
-So for example, to build the PowerDNS recursor version 4.5.3 on Alpine Linux 3.14.1, you would execute the following shell command:
+So for example, to build the PowerDNS recursor version 4.5.3 on Debian Linux 11.1-slim, you would execute the following shell command:
 
-    build-release alpine-3.14-4.5.3 4.5.3 alpine 3.14.1
+    build-release 4.5.3-debian-11.1-slim 4.5.3 debian 11.1-slim
 
 The build-realease command assumes the following parameter defaults;
 
@@ -131,7 +120,7 @@ The build-realease command assumes the following parameter defaults;
 
 This means that running the build-release command with no parameters would be the equivalent of executing the following shell command:
 
-    build-release latest 4.5.7 alpine 3.14
+    build-release latest 4.5.7 debian 11.1-slim
 
 When the image is tagged during compilation, the repository portion of the image tag is derived from the contents of the .as/docker-registry file and the tag from the first parameter provided to the build-release command.
 
