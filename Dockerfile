@@ -15,13 +15,16 @@ COPY src/pdns-recursor-${AS_PDNS_VERSION}.tar.bz2 /tmp/
 COPY files/* /srv/
 
 RUN apk update \
-  && apk add python3 py3-virtualenv py3-pip boost-dev boost-serialization boost-system boost-thread boost-context openssl-dev net-snmp-dev g++ make pkgconfig lua5.3-dev luajit-dev \
+  && apk add g++ make pkgconfig openssl-dev libsodium-dev net-snmp-dev \
+  python3 py3-virtualenv py3-pip boost-dev boost-serialization \
+  boost-system boost-thread boost-context lua5.3-dev luajit-dev \
   && pip3 install --no-cache-dir envtpl
 
 RUN mv /srv/entrypoint.sh / \
   && cat /tmp/pdns-recursor-${AS_PDNS_VERSION}.tar.bz2 | tar xj -C /tmp \
   && cd /tmp/pdns-recursor-${AS_PDNS_VERSION} \
   && ./configure --prefix="" --exec-prefix=/usr --sysconfdir=/etc/pdns \
+  --with-libsodium \
   && make \
   && make install \
   && cd / \
